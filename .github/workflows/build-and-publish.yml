@@ -1,0 +1,36 @@
+name: "Build/Publish"
+run-name: "Build/Publish : mgarnier11/devcontainer-base:${{ github.sha }}"
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - ".github/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: linux/amd64
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        env:
+          TOKEN: ${{ secrets.ARTIFACTORY_AUTH_TOKEN }}
+        run: |
+          docker build \
+          --file Dockerfile \
+          --tag mgarnier11/github-runner:${{ github.sha }} \
+          --tag mgarnier11/github-runner:latest \
+          .
+
+      - name: Push Docker image
+        run: |
+          docker login --username '${{ secrets.DOCKERHUB_USERNAME }}' --password '${{ secrets.DOCKERHUB_TOKEN }}'
+          docker push 'mgarnier11/github-runner:${{ github.sha }}'
+          docker push 'mgarnier11/github-runner:latest'
+          docker logout
