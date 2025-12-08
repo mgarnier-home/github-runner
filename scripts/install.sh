@@ -45,6 +45,7 @@ function install_prerequisites() {
   dumb-init \
   libc-bin \
   pass \
+  sshpass \
   zip \
   openssh-client \
   jq \
