@@ -10,13 +10,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: linux/${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform:
+          - amd64
+          - arm64
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: actions/checkout@v5
 
       - name: Build Docker image
         env:
@@ -24,13 +26,13 @@ jobs:
         run: |
           docker build \
           --file Dockerfile \
-          --tag mgarnier11/github-runner:${{ github.sha }} \
-          --tag mgarnier11/github-runner:latest \
+          --tag mgarnier11/github-runner:${{ matrix.platform }} \
+          --push \
           .
 
-      - name: Push Docker image
-        run: |
-          docker login --username '${{ secrets.DOCKERHUB_USERNAME }}' --password '${{ secrets.DOCKERHUB_TOKEN }}'
-          docker push 'mgarnier11/github-runner:${{ github.sha }}'
-          docker push 'mgarnier11/github-runner:latest'
-          docker logout
+      # - name: Push Docker image
+      #   run: |
+      #     docker login --username '${{ secrets.DOCKERHUB_USERNAME }}' --password '${{ secrets.DOCKERHUB_TOKEN }}'
+      #     docker push 'mgarnier11/github-runner:${{ github.sha }}'
+      #     docker push 'mgarnier11/github-runner:latest'
+      #     docker logout
