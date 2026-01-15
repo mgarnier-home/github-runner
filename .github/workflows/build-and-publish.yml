@@ -27,12 +27,8 @@ jobs:
           docker build \
           --file Dockerfile \
           --tag mgarnier11/github-runner:${{ matrix.platform }} \
-          --push \
           .
 
-      # - name: Push Docker image
-      #   run: |
-      #     docker login --username '${{ secrets.DOCKERHUB_USERNAME }}' --password '${{ secrets.DOCKERHUB_TOKEN }}'
-      #     docker push 'mgarnier11/github-runner:${{ github.sha }}'
-      #     docker push 'mgarnier11/github-runner:latest'
-      #     docker logout
+      - name: Push Docker image
+        run: |
+          docker push 'mgarnier11/github-runner:${{ matrix.platform }}'

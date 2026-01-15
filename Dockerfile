@@ -50,7 +50,7 @@ RUN \
   chown -R runner:runner /asdf
 
 # ---- Runner configuration ----
-ARG GH_RUNNER_VERSION="2.329.0"
+ARG GH_RUNNER_VERSION="2.331.0"
 
 # Set to linux/arm64 to build for arm
 ARG TARGETPLATFORM
