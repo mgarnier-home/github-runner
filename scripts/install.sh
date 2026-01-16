@@ -63,7 +63,22 @@ function install_docker() {
 }
 
 function configure_docker_credential_helpers() {
-    wget -O docker-credential-pass https://github.com/docker/docker-credential-helpers/releases/download/v0.9.4/docker-credential-pass-v0.9.4.linux-amd64
+    # Detect architecture and download the correct binary
+    ARCH=$(dpkg --print-architecture)
+    case "$ARCH" in
+        amd64)
+            DOCKER_CRED_ARCH="amd64"
+            ;;
+        arm64)
+            DOCKER_CRED_ARCH="arm64"
+            ;;
+        *)
+            echo "Unsupported architecture: $ARCH"
+            exit 1
+            ;;
+    esac
+    
+    wget -O docker-credential-pass "https://github.com/docker/docker-credential-helpers/releases/download/v0.9.4/docker-credential-pass-v0.9.4.linux-${DOCKER_CRED_ARCH}"
     chmod +x docker-credential-pass
     sudo mv docker-credential-pass /usr/local/bin/
 }
