@@ -326,6 +326,7 @@ else
     echo "$(date)"
     [[ -n "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]] && chown -R runner "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}"
     echo "$(date)"
+    ls -la "${_RUNNER_WORKDIR}"
     chown -R runner "${_RUNNER_WORKDIR}" 
     echo "$(date)"
     chown -R runner /actions-runner
