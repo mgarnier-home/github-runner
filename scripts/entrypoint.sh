@@ -329,6 +329,7 @@ else
     ls -la "${_RUNNER_WORKDIR}"
     chown -R runner "${_RUNNER_WORKDIR}" 
     echo "$(date)"
+    ls -la /actions-runner
     chown -R runner /actions-runner
     echo "$(date)"
     # The toolcache is not recursively chowned to avoid recursing over prepulated tooling in derived docker images
