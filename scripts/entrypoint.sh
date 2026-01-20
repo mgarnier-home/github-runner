@@ -326,7 +326,9 @@ else
     echo "$(date)"
     [[ -n "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]] && chown -R runner "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}"
     echo "$(date)"
-    chown -R runner "${_RUNNER_WORKDIR}" /actions-runner
+    chown -R runner "${_RUNNER_WORKDIR}" 
+    echo "$(date)"
+    chown -R runner /actions-runner
     echo "$(date)"
     # The toolcache is not recursively chowned to avoid recursing over prepulated tooling in derived docker images
     chown runner /opt/hostedtoolcache/
