@@ -32,3 +32,14 @@ jobs:
       - name: Push Docker image
         run: |
           docker push 'mgarnier11/github-runner:${{ matrix.platform }}'
+  publish:
+    runs-on: linux/amd64
+    needs: build
+    steps:
+      - name: Publish multi-arch image
+        run: |
+          docker buildx imagetools create \
+          --tag mgarnier11/github-runner:latest \
+          --tag mgarnier11/github-runner:${{ github.sha }} \
+          mgarnier11/github-runner:amd64 \
+          mgarnier11/github-runner:arm64
