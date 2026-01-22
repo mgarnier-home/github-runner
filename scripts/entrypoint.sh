@@ -321,20 +321,11 @@ if [[ ${_RUN_AS_ROOT} == "true" ]]; then
     exit 1
   fi
 else
-  echo "$(date)"
   if [[ $(id -u) -eq 0 ]]; then
-    echo "$(date)"
     [[ -n "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]] && chown -R runner "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}"
-    echo "$(date)"
-    ls -la "${_RUNNER_WORKDIR}"
-    chown -R runner "${_RUNNER_WORKDIR}" 
-    echo "$(date)"
-    ls -la /actions-runner
-    chown -R runner /actions-runner
-    echo "$(date)"
+    chown -R runner "${_RUNNER_WORKDIR}"  /actions-runner
     # The toolcache is not recursively chowned to avoid recursing over prepulated tooling in derived docker images
     chown runner /opt/hostedtoolcache/
-    echo "$(date)"
     if [[ ${_DEBUG_ONLY} == "true" ]] || [[ ${_DEBUG_OUTPUT} == "true" ]] ; then
       # shellcheck disable=SC2145
       echo "Running /usr/sbin/gosu runner $@"
