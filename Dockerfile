@@ -63,7 +63,7 @@ COPY ./scripts/install_actions.sh /actions-runner
 RUN chmod +x /actions-runner/install_actions.sh \
   && /actions-runner/install_actions.sh ${GH_RUNNER_VERSION} ${TARGETPLATFORM} \
   && rm /actions-runner/install_actions.sh \
-  && chown runner /_work /actions-runner /opt/hostedtoolcache
+  && chown -R runner /_work /actions-runner /opt/hostedtoolcache
 
 COPY ./scripts/token.sh ./scripts/entrypoint.sh ./scripts/app_token.sh /
 RUN chmod +x /token.sh /entrypoint.sh /app_token.sh

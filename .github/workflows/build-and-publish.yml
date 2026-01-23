@@ -25,6 +25,7 @@ jobs:
           TOKEN: ${{ secrets.ARTIFACTORY_AUTH_TOKEN }}
         run: |
           docker build \
+          --build-arg TARGETPLATFORM=${{ matrix.platform }} \
           --file Dockerfile \
           --tag mgarnier11/github-runner:${{ matrix.platform }} \
           .
