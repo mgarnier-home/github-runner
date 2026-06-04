@@ -21,8 +21,6 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Build Docker image
-        env:
-          TOKEN: ${{ secrets.ARTIFACTORY_AUTH_TOKEN }}
         run: |
           docker build \
           --build-arg TARGETPLATFORM=${{ matrix.platform }} \

@@ -1,0 +1,63 @@
+name: "Update GitHub Runner Version"
+run-name: "Mise à jour de la version du runner GitHub Actions"
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Tous les jours à 8h UTC
+  workflow_dispatch:
+
+jobs:
+  update-runner-version:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Get latest actions/runner release"
+        id: runner-release
+        run: |
+          LATEST_VERSION=$(curl -s \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/actions/runner/releases/latest \
+            | jq -r '.tag_name' | sed 's/^v//')
+          echo "version=${LATEST_VERSION}" >> "${GITHUB_OUTPUT}"
+
+      - name: "Get current runner version from Dockerfile"
+        id: current-version
+        run: |
+          CURRENT_VERSION=$(sed -n 's/ARG GH_RUNNER_VERSION="\(.*\)"/\1/p' Dockerfile)
+          echo "version=${CURRENT_VERSION}" >> "${GITHUB_OUTPUT}"
+
+      - name: "Create branch, commit and open PR"
+        if: steps.runner-release.outputs.version !=
+          steps.current-version.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.DOCKER_ACTION_RUNNER_GITHUB_TOKEN }}
+          VERSION: ${{ steps.runner-release.outputs.version }}
+        run: |
+          BRANCH="chore/update-gh-runner-${VERSION}"
+
+          git config user.name "Bot-Expert"
+          git config user.email "rd.expert@operis.fr"
+
+          git checkout -b "${BRANCH}"
+          sed -i "s/ARG GH_RUNNER_VERSION=\"[^\"]*\"/ARG GH_RUNNER_VERSION=\"${VERSION}\"/" Dockerfile
+          git add Dockerfile
+          git commit -m "chore: updated github runner version to ${VERSION}"
+          git push origin "${BRANCH}"
+
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "${BRANCH}" \
+            --title "chore: updated github runner version to ${VERSION}" \
+            --body "Mise à jour automatique du runner GitHub Actions vers la version \`${VERSION}\`." \
+            --reviewer "mgarnier11")
+
+          gh pr merge "${PR_URL}" --auto --merge
