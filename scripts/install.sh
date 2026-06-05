@@ -110,7 +110,7 @@ install_docker
 
 setup_sudoers
 groupadd -g "121" runner
-useradd -mr -d /home/runner -u "1001" -g "121" runner
+useradd -mr -d /home/runner -u "1000" -g "121" runner
 usermod -aG sudo runner
 usermod -aG docker runner
 
