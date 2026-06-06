@@ -114,5 +114,5 @@ usermod -aG sudo runner
 usermod -aG docker runner
 
 configure_docker_credential_helpers
-chown -R runner:runner /home/runner
+chown -R runner:users /home/runner
 
