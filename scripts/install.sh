@@ -109,7 +109,6 @@ install_gh_cli
 install_docker
 
 setup_sudoers
-groupadd -g "100" runner
 useradd -mr -d /home/runner -u "1000" -g "100" runner
 usermod -aG sudo runner
 usermod -aG docker runner
