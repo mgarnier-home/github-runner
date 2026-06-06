@@ -68,14 +68,14 @@ function configure_docker_credential_helpers() {
     case "$ARCH" in
         amd64)
             DOCKER_CRED_ARCH="amd64"
-            ;;
+        ;;
         arm64)
             DOCKER_CRED_ARCH="arm64"
-            ;;
+        ;;
         *)
             echo "Unsupported architecture: $ARCH"
             exit 1
-            ;;
+        ;;
     esac
     
     wget -O docker-credential-pass "https://github.com/docker/docker-credential-helpers/releases/download/v0.9.4/docker-credential-pass-v0.9.4.linux-${DOCKER_CRED_ARCH}"
@@ -109,8 +109,8 @@ install_gh_cli
 install_docker
 
 setup_sudoers
-groupadd -g "121" runner
-useradd -mr -d /home/runner -u "1000" -g "121" runner
+groupadd -g "100" runner
+useradd -mr -d /home/runner -u "1000" -g "100" runner
 usermod -aG sudo runner
 usermod -aG docker runner
 
