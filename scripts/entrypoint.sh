@@ -253,7 +253,7 @@ if [[ ${_START_DOCKER_SERVICE} == "true" ]]; then
     # Set up docker credential helper for pass
     mkdir -p /home/runner/.docker
     echo '{"credsStore":"pass"}' > /home/runner/.docker/config.json
-    chown -R runner:runner /home/runner/.docker
+    chown -R runner:users /home/runner/.docker
     chmod 700 /home/runner/.docker
     chmod 600 /home/runner/.docker/config.json
 

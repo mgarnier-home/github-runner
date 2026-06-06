@@ -46,8 +46,8 @@ RUN \
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN \
   mkdir -p /opt/hostedtoolcache && \
-  chown -R runner:runner /opt/hostedtoolcache && \
-  chown -R runner:runner /asdf
+  chown -R runner:users /opt/hostedtoolcache && \
+  chown -R runner:users /asdf
 
 # ---- Runner configuration ----
 ARG GH_RUNNER_VERSION="2.334.0"
