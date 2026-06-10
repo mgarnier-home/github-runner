@@ -39,13 +39,13 @@ jobs:
         if: steps.runner-release.outputs.version !=
           steps.current-version.outputs.version
         env:
-          GH_TOKEN: ${{ secrets.DOCKER_ACTION_RUNNER_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           VERSION: ${{ steps.runner-release.outputs.version }}
         run: |
           BRANCH="chore/update-gh-runner-${VERSION}"
 
-          git config user.name "Bot-Expert"
-          git config user.email "rd.expert@operis.fr"
+          git config user.name "mgarnier11"
+          git config user.email "mgarnier11@gmail.com"
 
           git checkout -b "${BRANCH}"
           sed -i "s/ARG GH_RUNNER_VERSION=\"[^\"]*\"/ARG GH_RUNNER_VERSION=\"${VERSION}\"/" Dockerfile
